@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('groups', function (Blueprint $table) {
+           Schema::create('user_logs', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->date('creation_date');
-            $table->text('description');
-            $table->integer('NumOfUser');
+            $table->string('action'); 
+            $table->date('date');
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate()->unique();
+            $table->foreignId('file_id')->constrained('files')->cascadeOnDelete()->cascadeOnUpdate()->unique();
+
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('groups');
+        Schema::dropIfExists('user_logs');
     }
 };

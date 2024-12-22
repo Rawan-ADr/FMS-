@@ -22,7 +22,7 @@ class RolesPermissionsSeeder extends Seeder
         $adminOfGroupRole= Role::create(['name'=>'adminOfGroup']);
 
         $permissions=[
-           'group.create' , 'group.update' ,'group.delete','group.index','user.index','userToGroup.add'
+           'group.create' , 'group.update' ,'group.delete','group.index','user.index','userToGroup.add' ,'file.add'
         ];
 
        foreach ($permissions as $permissionName) {
@@ -30,7 +30,7 @@ class RolesPermissionsSeeder extends Seeder
         }
 
         $adminRole->syncPermissions($permissions);
-        $normalUserRole->givePermissionTo(['group.create' , 'group.update','group.index','user.index']);
+        $normalUserRole->givePermissionTo(['group.create' , 'group.update','group.index','user.index','file.add']);
         $adminOfGroupRole->givePermissionTo(['group.create' , 'group.update' ,'group.delete','group.index',
         'user.index','userToGroup.add' ]);
 

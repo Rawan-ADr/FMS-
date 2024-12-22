@@ -140,7 +140,8 @@ class UserService
                 'joined_date'=>$request['joined_date'] ?? Carbon::today()
              ];
              $userGroup= $this->userGroupRepository->create($userGroup);
-
+             $this->groupRepository->increaseNumOfUser($request['group_id']);
+            
              $message="user added to group successflly ";
              $code=200;
         }

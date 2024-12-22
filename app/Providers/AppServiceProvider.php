@@ -9,6 +9,8 @@ use App\Repositories\GroupRepository;
 use App\Repositories\GroupRepositoryInterface;
 use App\Repositories\UserGroupRepository;
 use App\Repositories\UserGroupRepositoryInterface;
+use App\Repositories\FileRepository;
+use App\Repositories\FileRepositoryInterface;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -21,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(GroupRepositoryInterface::class, GroupRepository::class);
         $this->app->bind(UserGroupRepositoryInterface::class, UserGroupRepository::class);
+         $this->app->bind(FileRepositoryInterface::class,FileRepository::class);
     }
 
     /**

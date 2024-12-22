@@ -15,4 +15,14 @@ class UserGroup extends Model
         'group_id',
         'joined_date',
     ];
+
+     public function group()
+    {
+        return $this->belongsTo(Group::class);
+    }
+
+    public function files()
+    {
+        return $this->hasMany(File::class);
+    }
 }

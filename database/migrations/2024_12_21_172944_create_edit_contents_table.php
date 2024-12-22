@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('groups', function (Blueprint $table) {
+        Schema::create('edit_contents', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->date('creation_date');
-            $table->text('description');
-            $table->integer('NumOfUser');
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate()->unique();
+            $table->foreignId('file_id')->constrained('files')->cascadeOnDelete()->cascadeOnUpdate()->unique();
+            $table->foreignId('copy_id')->constrained('file_copies')->cascadeOnDelete()->cascadeOnUpdate()->unique();
+            $table->Text('content');
             $table->timestamps();
         });
     }
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('groups');
+        Schema::dropIfExists('edit_contents');
     }
 };

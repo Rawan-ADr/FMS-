@@ -44,5 +44,17 @@ class GroupRepository implements GroupRepositoryInterface
         return $group;
     }
 
+    public function groupByNameAndDescription($id,string $name,string $description){
+        $group =Group::where('name',$name)
+                  ->where('description',$description)->find($id);
+        return $group;          
+    }
+    public function increaseNumOfUser($id){
+        $group =Group::find($id)->first();
+        $group->NumOfUser++;
+        $group->save();
+
+    }
+
     
 }

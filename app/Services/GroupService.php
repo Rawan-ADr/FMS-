@@ -32,6 +32,8 @@ class GroupService
     public function create($request){
         $group= [
             'name'=> $request['name'],
+            'description'=>$request['description'],
+            'NumOfUser'=>1,
             'creation_date'=> $request['group-date'] ?? Carbon::today(),
             'user_id'=> Auth::id(),
 
@@ -76,32 +78,40 @@ class GroupService
         return ["group" => null, "message" => "Group not found."];
     }
 
-    if ((Auth::user()->hasRole('adminOfGroup') && Auth::id() == $group->user_id) 
-    || Auth::user()->hasRole('admin')) {
-
-        $group=['name' => $request['name']];
-        $group=$this->groupRepository->update($group_id,$group);
-
-        return ["group" => $group, "message" => "Group updated successfully."];
+   
+    if ((Auth::user()->hasRole('adminOfGroup') && Auth::id() == $group->user_id)
+     || Auth::user()->hasRole('admin')) {
+        return $this->processUpdate($request, $group_id);
     }
 
+   
+    $userGroup = $this->userGroupRepository->findByUserAndGroup($group_id, Auth::id());
     
-    $userGroup = $this->userGroupRepository->findByUserAndGroup( $group_id,Auth::id());
-                          
-            
-
     if (!is_null($userGroup)) {
-
-        $group=['name' => $request['name']];
-        $group=$this->groupRepository->update($group_id,$group);
-
-        return ["group" => $group, "message" => "Group updated successfully."];
+        return $this->processUpdate($request, $group_id);
     } else {
         return ["group" => null, "message" => "You cannot update this group."];
     }
+}
 
-   }
-   
+private function processUpdate($request, $group_id) {
+    
+    $existingGroup = $this->groupRepository->groupByNameAndDescription($group_id,$request['name'], 
+    $request['description']);
+    
+    if (is_null($existingGroup)) {
+        
+        $updatedData = [
+            'name' => $request['name'],
+            'description' => $request['description']
+        ];
+        $updatedGroup = $this->groupRepository->update($group_id, $updatedData);
+
+        return ["group" => $updatedGroup, "message" => "Group updated successfully."];
+    } else {
+        return ["group" => null, "message" => "You cannot update this group; it already exists."];
+    }
+}
    public function delete($group_id){
 
     $group = $this->groupRepository->find($group_id);
@@ -126,12 +136,12 @@ class GroupService
         $group = $this->groupRepository->all();
         
     }
-    elseif(Auth::user()->hasRole('adminOfGroup')){
-        $group =$this->groupRepository->groupByUserId(Auth::id());
+  //  elseif(Auth::user()->hasRole('adminOfGroup')){
+     //   $group =$this->groupRepository->groupByUserId(Auth::id());
 
-    }
+   // }
     else{
-        $group = $this->userRepository->groupForNormalUser(Auth::id());
+        $group = $this->userRepository->groupForUser(Auth::id());
     }
     if($group->isEmpty()){
         return ["group" => $group, "message" => "there are no group"];

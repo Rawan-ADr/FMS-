@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use App\Models\File;
 
 class Group extends Model
 {
@@ -15,7 +16,14 @@ class Group extends Model
     protected $fillable = [
         'name',
         'creation_date',
-        'user_id'
+        'user_id',
+        'description',
+        'NumOfUser'
+    ];
+
+    protected $hidden = [
+       
+        'pivot'
     ];
 
     public function user(){
@@ -24,4 +32,18 @@ class Group extends Model
         ->withTimestamps();  
 
 }
+
+ 
+
+
+      public function userGroups()
+    {
+        return $this->hasMany(UserGroup::class);
+    }
+
+
+    public function files()
+    {
+        return $this->hasManyThrough(File::class, UserGroup::class);
+    }
 }

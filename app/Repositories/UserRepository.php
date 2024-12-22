@@ -44,14 +44,13 @@ class UserRepository implements UserRepositoryInterface
         return User::where('email', $email)->first();
     }
 
-    public function groupForNormalUser($id){
+    public function groupForUser($id){
 
-        $group = User::where('id', $id)->with(['group' =>
-        function ($query) use ($id) { 
-            $query->wherePivot('user_id', $id);
-        }
-    ])->get();
+        $groups = User::find($id)->group()->get();
 
-    return $group;
+        return $groups;
+       
+      
+  
     }
 }

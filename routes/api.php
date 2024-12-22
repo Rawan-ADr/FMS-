@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
  use App\Http\Controllers\UserController;
  use App\Http\Controllers\GroupController;
+   use App\Http\Controllers\FileController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -43,4 +44,22 @@ Route::group(['middleware' => ['auth:sanctum']], function() {
         Route::post('add/to/group', [UserController::class, 'addUserToGroup'])
         ->middleware('can:userToGroup.add');
     });
+          Route::prefix('file')->group(function () {
+        Route::post('addFile', [FileController::class, 'addFile'])
+        ->middleware('can:file.add');
+         Route::get('/reserveFile/{id}', [FileController::class, 'reserveFile'])
+        ->middleware('UserLogg','FileLogg');
+         Route::get('/unreserveFile/{id}', [FileController::class, 'unreserveFile'])
+        ->middleware('UserLogg','FileLogg');
+         Route::post('/reserveAll/{ids}', [FileController::class, 'reserveAll'])
+        ->middleware('UserLogg','FileLogg');
+         Route::post('/upDateFile/{id}', [FileController::class, 'upDateFile'])
+        ->middleware('UserLogg','FileLogg');
+        Route::get('/getFile/{id}', [FileController::class, 'getFile']);
+        Route::get('/showFileLogs/{id}', [FileController::class, 'showFileLogs']);
+        Route::get('/showUserLogs/{id}', [FileController::class, 'showUserLogs']);
+        Route::get('/showFileCopy/{id}', [FileController::class, 'showFileCopy']);
+    });
+
+    
 });

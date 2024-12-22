@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('files', function (Blueprint $table) {
+          Schema::create('files', function (Blueprint $table) {
             $table->id();
-               $table->string('name'); 
-               $table->text('content'); 
+               $table->string('name')->unique(); 
+               $table->string('path'); 
                $table->string('type'); 
+               $table->unsignedBigInteger('size'); 
                $table->enum('state', ['reserved', 'free']); 
-               $table->foreignId('user_id')->constrained('users')->cascadeOnDelete()->cascadeOnUpdate()->unique();
+               $table->string('user_id')->nullable();
+               $table->foreignId('user_group_id')->constrained('user_groups')->cascadeOnDelete()->cascadeOnUpdate()->unique();
              $table->timestamps(); 
         });
     }

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GroupRequest extends FormRequest
+class FilesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,8 @@ class GroupRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|min:4',
-            'description'=>'required',
-            'creation_date'=>'date',
-                 ];
-        
+          'files'=>['required','array'],
+          'files.*'=>'required','integer','exists:files,id',
+        ];
     }
 }
