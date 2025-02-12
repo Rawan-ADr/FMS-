@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\UserGroupRequest;
+use App\Http\Requests\UserNameRequest;
 use App\Http\Responses\Response;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -63,11 +64,11 @@ class UserController extends Controller
         }
     }
 
-    public function index(){
+    public function index($group_id){
 
         $data=[];
      try{
-         $data=$this->userService->index();
+         $data=$this->userService->index($group_id);
          return Response::Success($data['user'],$data['message'],$data['code']) ;
      }
 
@@ -90,7 +91,23 @@ class UserController extends Controller
             return Response::Error($data,$message);
 
         }
+    }
 
- }
+        public function searchForUserByName(UserNameRequest $request,$group_id){
+            $data=[];
+            try{
+                $data=$this->userService->searchForUserByName($request->validated(),$group_id);
+                return Response::Success($data['user'],$data['message']) ;
+            }
+    
+            catch (Throwable $th){
+                $message=$th->getmessage();
+                return Response::Error($data,$message);
+    
+            }
+
+        }
+
+ 
 
 }

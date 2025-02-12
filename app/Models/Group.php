@@ -38,7 +38,7 @@ class Group extends Model
 
       public function userGroups()
     {
-        return $this->hasMany(UserGroup::class);
+        return $this->hasMany(UserGroup::class, 'group_id');
     }
 
 

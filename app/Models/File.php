@@ -17,13 +17,13 @@ class File extends Model
         'path',
        'size',
        'state',
-        'user_groups'
+        'user_group_id'
       
     ];
 
-    public function userGroup()
+     public function userGroup()
     {
-        return $this->belongsTo(UserGroup::class);
+        return $this->belongsTo(UserGroup::class, 'user_group_id');
     }
 
      public function fileLogs()
@@ -39,5 +39,12 @@ class File extends Model
     {
         return $this->hasMany(FileCopy::class);
     }
+
+    public function editContents()
+    {
+        return $this->hasMany(EditContent::class);
+    }
+
+   
 
 }

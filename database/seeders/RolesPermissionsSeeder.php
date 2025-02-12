@@ -23,6 +23,7 @@ class RolesPermissionsSeeder extends Seeder
 
         $permissions=[
            'group.create' , 'group.update' ,'group.delete','group.index','user.index','userToGroup.add' ,'file.add'
+           ,'fileReport.index','userReport.index'
         ];
 
        foreach ($permissions as $permissionName) {
@@ -30,14 +31,16 @@ class RolesPermissionsSeeder extends Seeder
         }
 
         $adminRole->syncPermissions($permissions);
-        $normalUserRole->givePermissionTo(['group.create' , 'group.update','group.index','user.index','file.add']);
+        $normalUserRole->givePermissionTo(['group.create' , 'group.update','group.index','user.index','file.add'
+        ,'fileReport.index']);
         $adminOfGroupRole->givePermissionTo(['group.create' , 'group.update' ,'group.delete','group.index',
-        'user.index','userToGroup.add' ]);
+        'user.index','userToGroup.add' ,'fileReport.index','userReport.index' ]);
 
 
         $adminUser=User::factory()->create([
             'name' =>'Admin',
             'email' =>'admin@gmail.com',
+            'fcm_token'=>'nnnn',
             'password' =>bcrypt('12345678'),
         ]);
 

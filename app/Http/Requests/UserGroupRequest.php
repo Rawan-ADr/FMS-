@@ -23,8 +23,8 @@ class UserGroupRequest extends FormRequest
     {
         return [
            
-                'user_id' => 'required|integer|exists:users,id',
-                'group_id' => 'required|integer|exists:groups,id',
+                'user_id' => 'required|integer|',
+                'group_id' => 'required|integer',
                 'joined_date'=>'date',
                     
             

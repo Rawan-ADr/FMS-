@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('edit_contents', function (Blueprint $table) {
             $table->id();
             $table->foreignId('file_id')->constrained('files')->cascadeOnDelete()->cascadeOnUpdate()->unique();
-            $table->foreignId('copy_id')->constrained('file_copies')->cascadeOnDelete()->cascadeOnUpdate()->unique();
+            $table->foreignId('copy_id')->constrained('file_copies')->cascadeOnDelete()->cascadeOnUpdate()->unique()->nullable();
             $table->Text('content');
             $table->timestamps();
         });

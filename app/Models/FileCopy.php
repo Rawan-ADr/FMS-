@@ -24,4 +24,9 @@ class FileCopy extends Model
     {
         return $this->belongsTo(File::class);
     }
+
+    public function editContents()
+    {
+        return $this->hasMany(EditContent::class);
+    }
 }

@@ -16,4 +16,14 @@ class EditContent extends Model
         'content',
         
     ];
+
+     public function file()
+    {
+        return $this->belongsTo(File::class);
+    }
+    
+     public function fileCopies()
+    {
+        return $this->belongsTo(FileCopy::class);
+    }
 }

@@ -11,5 +11,9 @@ interface UserRepositoryInterface
     public function delete($id);
     public function findByEmail(string $email);
     public function groupForUser($id);
+    public function updateFCM($id, $fcm);
+    public function usersNotInPivotTable($id);
+  
+    public function searchForUserInGroup(string $name,$id);
 
 }

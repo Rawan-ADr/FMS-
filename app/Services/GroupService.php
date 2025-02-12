@@ -45,10 +45,11 @@ class GroupService
             'joined_date'=> Carbon::today(),
 
         ];
+        
         $user_group= $this->userGroupRepository->create($user_group);
      
            $user = $this->userRepository->find(Auth::id());
-            $adminOfGroupRole= Role::query()->where('name','adminOfGroup')->first();;
+            $adminOfGroupRole= Role::query()->where('name','adminOfGroup')->first();
 
             if(!$user->hasRole('adminOfGroup')){
 
@@ -147,6 +148,7 @@ private function processUpdate($request, $group_id) {
         return ["group" => $group, "message" => "there are no group"];
     }
      else{
+        
         return ["group" => $group, "message" => "Group indexed successfully"];
      }
    }

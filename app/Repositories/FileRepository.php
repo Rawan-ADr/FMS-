@@ -46,7 +46,7 @@ class FileRepository implements FileRepositoryInterface
 
       public function get($id)
     {
-        return File::where('user_groups',$id)->get();
+        return File::where('user_group_id',$id)->get();
     }
 
     

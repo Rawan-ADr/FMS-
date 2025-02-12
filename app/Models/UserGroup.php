@@ -16,13 +16,13 @@ class UserGroup extends Model
         'joined_date',
     ];
 
-     public function group()
+      public function group()
     {
-        return $this->belongsTo(Group::class);
+        return $this->belongsTo(Group::class, 'group_id');
     }
 
-    public function files()
+     public function files()
     {
-        return $this->hasMany(File::class);
+        return $this->hasMany(File::class, 'user_group_id');
     }
 }

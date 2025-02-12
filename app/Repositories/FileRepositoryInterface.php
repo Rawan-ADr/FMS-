@@ -12,5 +12,6 @@ interface FileRepositoryInterface
     public function fileByUserId($id);
     public function get($id);
     
+    
 
 }

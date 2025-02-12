@@ -35,6 +35,7 @@ class UserService
         $user= [
            'name'=>$request['name'],
            'email'=>$request['email'],
+           'fcm_token'=>$request['fcm_token'],
            'password'=>Hash::make($request['password'])
         ];
 
@@ -66,8 +67,14 @@ class UserService
                 $code=401;
             }
             else{
+                $id=Auth::id();
+                $fcm=$request['fcm_token'];
+                $user=$this->userRepository->updateFCM($id,$fcm);
+                $user = $this->userRepository->findByEmail($request['email']);
                 $user=$this->apendRoleAndPermission($user);
                 $user['token']=$user->createToken("token")->plainTextToken;
+                
+              
                 $message=" logged in successfully ";
                 $code=200;
             }
@@ -112,8 +119,8 @@ class UserService
         return $user;
     }
 
-    public function index(){
-       $user = $this->userRepository->all();
+    public function index($group_id){
+        $user =$this->userRepository->usersNotInPivotTable($group_id);
        if(!is_null($user)){
             $message="user indexed successflly ";
             $code=200;
@@ -126,6 +133,7 @@ class UserService
     }
 
     public function addUserToGroup($request){
+        $cc=$request['group_id'];
         $group =$this->groupRepository->find($request['group_id']);
         $userGroup = null;
         if ((Auth::user()->hasRole('adminOfGroup') && Auth::id() == $group->user_id) ){
@@ -140,7 +148,8 @@ class UserService
                 'joined_date'=>$request['joined_date'] ?? Carbon::today()
              ];
              $userGroup= $this->userGroupRepository->create($userGroup);
-             $this->groupRepository->increaseNumOfUser($request['group_id']);
+                  $this->groupRepository->increaseNumOfUser($cc);
+
             
              $message="user added to group successflly ";
              $code=200;
@@ -156,6 +165,25 @@ class UserService
         }
         return ['userGroup'=>$userGroup,'message'=>$message,'code'=>$code];
     }
-    
 
+
+
+    public function searchForUserByName( $request,$group_id){
+     
+        $userGroup= $this->userGroupRepository->findByUserAndGroup($group_id,Auth::id());
+        
+        if($userGroup || (Auth::user()->hasRole('admin')) ){
+
+        $user =$this->userRepository->searchForUserInGroup($request['name'],$group_id);
+        if($user){
+            return ['user'=>$user,'message'=>"user here"];
+        }
+        else{
+            return ['user'=>null,'message'=>"no body here by this name"];
+        }}
+        else{
+            return ['user'=>null,'message'=>"you can not search for user"];
+        }
+
+}
 }

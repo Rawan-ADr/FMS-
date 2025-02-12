@@ -49,10 +49,13 @@ class GroupRepository implements GroupRepositoryInterface
                   ->where('description',$description)->find($id);
         return $group;          
     }
+
+
     public function increaseNumOfUser($id){
-        $group =Group::find($id)->first();
-        $group->NumOfUser++;
+        $group =Group::find($id);
+        $group->NumOfUser=$group->NumOfUser+1;
         $group->save();
+       
 
     }
 

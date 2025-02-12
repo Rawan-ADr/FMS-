@@ -17,6 +17,7 @@ return new class extends Migration
                $table->string('path'); 
                $table->string('type'); 
                $table->unsignedBigInteger('size'); 
+               $table->boolean('is_approved')->default(0);
                $table->enum('state', ['reserved', 'free']); 
                $table->string('user_id')->nullable();
                $table->foreignId('user_group_id')->constrained('user_groups')->cascadeOnDelete()->cascadeOnUpdate()->unique();
